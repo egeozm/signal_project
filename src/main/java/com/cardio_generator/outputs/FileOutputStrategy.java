@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 // Changed the class name form "fileOutStrategy" to "FileOutputStrategy". Class name starts with uppercase.
 public class FileOutputStrategy implements OutputStrategy {
 
-    // Changed "BaseDirectory" to "baseDirectory". Variable start with lowercase.
+    // Changed "BaseDirectory" to "baseDirectory". For variable names use camelCase.
     private String baseDirectory;
 
     // Changed "file_map" to "FILE_MAP". Constant naming conventions which use uppercase letters with underscores.
@@ -31,7 +31,7 @@ public class FileOutputStrategy implements OutputStrategy {
             return;
         }
         // Set the FilePath variable
-        // Changed "FilePath" to "filePath". Variable start with lowercase.
+        // Changed "FilePath" to "filePath". Local variable start with lowercase.
         String filePath = FILE_MAP.computeIfAbsent(label, k -> Paths.get(baseDirectory, label + ".txt").toString());
 
         // Write the data to the file

@@ -7,7 +7,7 @@ import com.cardio_generator.outputs.OutputStrategy;
 public class AlertGenerator implements PatientDataGenerator {
 
     public static final Random randomGenerator = new Random();
-    // Changed "AlertStates" to "alertStates". Variable names start with lowercase.
+    // Changed "AlertStates" to "alertStates". For variable names use camelCase.
     private boolean[] alertStates; // false = resolved, true = pressed
 
     public AlertGenerator(int patientCount) {
