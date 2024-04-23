@@ -1,0 +1,28 @@
+UML Diagram Documentation for Patient Health Monitoring System
+
+Design Overview:
+
+The UML class diagram illustrates a modular health monitoring system comprising several data generators, each adhering to the “PatientDataGenerator” interface. This interface ensures consistent data generation, for simulating various patient health metrics such as alerts, blood levels, blood pressure, blood saturation, and ECG.
+
+Rational: 
+
+	•	Modularity: The interface-driven approach ensures system extensibility, allowing new health data types to integrate seamlessly.
+
+	•	Single Responsibility: Individual classes for alerts, blood levels, and other metrics simplify maintenance and upload the Single Responsibility Principle.
+
+	•	Randomisation: A “Random” class instance in each generator mimics the unpredictability of patient health metrics, providing a unified method for data variation.
+
+	•	Encapsulation: Internal state management within each class secures data integrity and hides implementation specifies.
+
+Assumption: 
+
+	•	The design assumes patient IDs are unique integers, facilitating straightforward data corporation.
+
+	•	Health metric data storage is abstracted, focusing on system design rather than data persistence mechanisms.
+
+	•	The “OutputStrategy” is expecting to represent various data handling strategies, adaptable to the system’s output needs.
+
+
+Conclusion: 
+
+The design of the health monitoring system is aimed at flexibility. The UML diagram and the accompanying code reflect a system that can evolve to include new data types and handle complex patient data scenarios while maintaining a clear and manageable codebase.
