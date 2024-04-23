@@ -66,3 +66,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Project Members
       - Student ID: i6351588
+
+## Data Generator Diagrams
+
+You can see the [DIAGRAMS](uml_models) file for diagrams and documentation.
