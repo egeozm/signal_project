@@ -1,0 +1,22 @@
+The Data Storage System is designed to effectively store and manage historical patient data, supporting both real-time monitoring and retrospective analysis in a healthcare setting.
+
+Key Components:
+
+1.DataStorage: This class is fundamental for storing patient data. It provides crucial functionalities such as:
+
+storeData(PatientData data): Adds new patient data.
+retrieveData(String patientId): Fetches historical data.
+deleteData(String patientId): Removes obsolete data.
+
+2.PatientData: Represents individual patient data at a specific time, including details like patient ID, health metrics (e.g., heart rate, blood pressure), and a 
+timestamp.
+
+3.DataRetriever: Used by medical staff to access patient data securely, ensuring data privacy through rigorous security measures.
+
+System Operation:
+
+The system stores all patient data, from real-time vital signs to historical medical records, crucial for analysing health trends and supporting emergency interventions.
+It operates on secure and encrypted channels to protect patient confidentiality.
+Communication and Access:
+
+The system provides an API for integration with the Alert Generation and Patient Identification systems, allowing specific data access for generating alerts and matching patient records accurately.

@@ -1,0 +1,20 @@
+The Data-Access Layer (DAL) of the Cardiovascular Health Monitoring System is crucial for integrating with external data sources like a signal generator, which simulates patient cardiovascular data. This layer acts as a bridge, ensuring the main system can seamlessly interact with both simulated and real patient data sources.
+
+Key Components of the Data-Access Layer:
+
+1.DataListener Classes: These are specialised for different data sources—TCPDataListener, WebSocketDataListener, FileDataListener. Each class is designed to handle specific types of data inputs, such as direct device inputs, websockets, or file-based data. This modular approach allows for flexibility in data reception.
+
+2.DataParser: This component standardises the incoming raw data into a uniform format. Whether the data comes from the signal generator or real monitoring devices, the DataParser ensures that all incoming data is converted into a consistent format that 
+the system can easily process.
+
+3.DataSourceAdapter: After data is parsed, the DataSourceAdapter takes over to process and store the data in the system's Data Storage. This ensures that all processed data is maintained accurately and is readily accessible for further analysis or real-time monitoring.
+
+Operation and Flexibility:
+
+The DAL is designed with flexibility to adapt from simulated scenarios to real-world applications without major changes to the system. It supports various communication protocols like TCP, WebSocket, and file-based inputs, making it adaptable to different data transmission methods.
+
+Integration and Functionality:
+
+The DAL not only retrieves and processes data but also ensures that the data integration is secure and efficient, meeting the critical needs of a health monitoring system. It provides a reliable infrastructure for data management that is essential for accurate patient monitoring and analysis.
+
+This setup allows the Cardiovascular Health Monitoring System to function effectively in diverse environments, handling data from multiple sources while ensuring data integrity and system reliability.

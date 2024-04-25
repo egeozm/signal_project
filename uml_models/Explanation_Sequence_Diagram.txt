@@ -1,0 +1,18 @@
+The state diagram for the Alert Generation System shows how an alert progresses from when it's first generated to when it's resolved. The diagram includes four main states: "Generated," "Sent," "Acknowledged," and "Resolved." These states are crucial for understanding how alerts are processed in a healthcare setting to ensure quick and efficient responses.
+
+1.Generated: This state starts when patient data hits certain critical levels, triggering the alert system to react immediately.
+
+2.Sent: The alert is sent to medical staff's devices to ensure they are informed quickly.
+
+3.Acknowledged: Medical staff acknowledge receiving the alert, which helps prevent 
+repeated notifications.
+
+4.Resolved: The alert can be resolved automatically if the patient's condition improves, or manually if a staff member updates the system after treating the patient.
+
+The sequence diagram outlines the interactions from when the alert is triggered by patient data until medical staff acknowledge it. Key steps include:
+
+Data Checks: The AlertGenerator checks if patient data meets the alert criteria.
+
+Historical Data Review: DataStorage is queried to confirm the data trend.
+
+Alert Handling: An alert is created and sent, then acknowledged by the medical staff.

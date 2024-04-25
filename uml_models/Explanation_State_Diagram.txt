@@ -1,0 +1,12 @@
+The state diagram for the Alert Generation System shows the different stages an alert goes through from when it starts to when it ends. It's designed to help understand how alerts are managed in a healthcare monitoring system. The diagram includes four main states: "Generated," "Sent," "Acknowledged," and "Resolved." Each of these states plays a key role in the alert process.
+
+1.Generated: This is the first state where the system recognises that the patient's data is outside normal parameters. It happens when sensors pick up readings like a high heart rate or low oxygen levels that meet predefined alert criteria.
+
+2.Sent: Once an alert is generated, it is immediately sent to the medical staff's devices such as monitors and mobile phones. This ensures that the staff are informed as quickly as possible.
+
+3.Acknowledged: After receiving the alert, the medical staff must acknowledge it. This acknowledgment shows that someone has seen the alert and is taking responsibility for checking on the patient. This step is crucial to prevent the alert from being sent repeatedly.
+
+4.Resolved: The final state can be reached in two ways: either automatically, if subsequent patient data shows that the condition has stabilised by itself, or manually, if a healthcare provider assesses the patient and decides to clear the alert 
+based on their medical judgment.
+
+This state diagram is essential for visualising how alerts are handled within the system, ensuring that the medical team can respond efficiently and effectively to patient needs. It highlights the system's ability to support healthcare providers in delivering timely care.
