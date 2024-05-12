@@ -1,7 +1,9 @@
 package com.data_management;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Represents a patient and manages their medical records.
@@ -32,8 +34,7 @@ public class Patient {
      * @param measurementValue the measurement value to store in the record
      * @param recordType       the type of record, e.g., "HeartRate",
      *                         "BloodPressure"
-     * @param timestamp        the time at which the measurement was taken, in
-     *                         milliseconds since UNIX epoch
+     * @param timestamp        the time at which the measurement was taken in milliseconds since the UNIX epoch
      */
     public void addRecord(double measurementValue, String recordType, long timestamp) {
         PatientRecord record = new PatientRecord(this.patientId, measurementValue, recordType, timestamp);
@@ -49,9 +50,18 @@ public class Patient {
      *                  epoch
      * @param endTime   the end of the time range, in milliseconds since UNIX epoch
      * @return a list of PatientRecord objects that fall within the specified time
-     *         range
+     * range
      */
     public List<PatientRecord> getRecords(long startTime, long endTime) {
         // TODO Implement and test this method
+        return patientRecords
+                .stream()
+                .filter(x -> x.getTimestamp() >= startTime && x.getTimestamp() <= endTime)
+                .collect(Collectors.toList());
+
     }
+
+
+
+
 }
