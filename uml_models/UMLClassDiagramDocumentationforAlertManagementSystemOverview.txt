@@ -1,0 +1,89 @@
+This UML class diagram represents the structure and interactions of classes within an alert management system designed to monitor patient data and generate alerts based on specific health conditions.
+
+Classes and Interfaces
+
+Alert
+
+Description: Represents an alert that is triggered when certain conditions are met 
+regarding a patient's health.
+
+Attributes:
+
+patientId: A unique identifier for the patient.
+condition: Describes the health condition that triggered the alert.
+timestamp: The time when the alert was generated.
+label: Additional information or categorisation of the alert.
+
+Methods:
+Constructors, getters, and setters are typical for managing alert properties.
+
+AlertGenerator
+
+Description: Responsible for evaluating patient data and generating alerts when 
+predefined conditions are detected.
+
+Attributes:
+
+dataStorage: Dependency on a data storage class that provides access to patient data.
+
+Methods:
+
+evaluateData(Patient patient): Processes patient data to determine if an alert should be triggered.
+triggerAlert(Alert alert): Activates an alert, possibly involving logging or notification mechanisms.
+
+AlertStorage
+
+Description: Manages storage and retrieval of alert objects, ensuring that alerts are 
+appropriately logged and can be accessed when required.
+
+Attributes:
+
+alerts: A collection that holds all generated alerts.
+alertStorageStrategy: Strategy used for storing alerts, which can be changed dynamically.
+
+Methods:
+
+alertStore(Alert alert): Stores an alert using the specified storage strategy.
+getAlerts(): Retrieves all stored alerts.
+
+AlertStorageStrategy
+
+Description: Interface that defines a method for storing alerts.
+
+Methods:
+
+store(Alert alert): Abstract method to be implemented by different storage strategies.
+ConsoleAlertStorageStrategy
+
+Description: Concrete implementation of the AlertStorageStrategy that logs alerts to the console.
+
+Methods:
+
+store(Alert alert): Implements the storage by printing alert details to the console.
+
+Relationships
+
+AlertGenerator to Alert: Uses relationship, indicating that AlertGenerator creates and 
+manages Alert objects.
+
+AlertGenerator to AlertStorage: Uses relationship, AlertGenerator may interact with 
+AlertStorage to store generated alerts.
+
+AlertStorage to Alert: Uses relationship, as AlertStorage manages instances of Alert.
+
+AlertStorage to AlertStorageStrategy: Uses relationship, with AlertStorage utilizing 
+an implementation of AlertStorageStrategy for storing alerts.
+
+ConsoleAlertStorageStrategy to AlertStorageStrategy: Implementation relationship, where ConsoleAlertStorageStrategy is a specific type of AlertStorageStrategy.
+
+Multiplicity
+
+Each AlertGenerator can generate multiple Alerts.
+
+Each AlertStorage can contain multiple Alerts but uses one AlertStorageStrategy at a time.
+
+The relationship between AlertGenerator and AlertStorage typically involves a single instance of AlertStorage due to its design as a singleton.
+
+Conclusion
+
+This UML class diagram effectively captures the key components and interactions within the alert management system, providing a clear architectural overview. It serves as a useful tool for understanding the system's design and for guiding future developments or maintenance efforts.
