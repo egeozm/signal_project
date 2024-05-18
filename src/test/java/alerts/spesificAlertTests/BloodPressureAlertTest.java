@@ -32,7 +32,7 @@ public class BloodPressureAlertTest extends AlertTestBase {
     @Test
     public void testSystolicPressureThreshold() {
         AlertStorage alertStorage = AlertStorage.getAlertStorageInstance();
-        Alert highAlert = new Alert("1","resolved", 1800000000000L, "Systolic Pressure higher than 180");
+        Alert highAlert = new Alert("3", "resolved", 1800000000000L, "Systolic Pressure higher than 180");
         Alert lowAlert = new Alert("2", "resolved", 1800000000000L, "Systolic Pressure lower than 90");
         assertTrue(alertStorage.getAlerts().contains(highAlert));
         assertTrue(alertStorage.getAlerts().contains(lowAlert));
@@ -41,12 +41,11 @@ public class BloodPressureAlertTest extends AlertTestBase {
     @Test
     public void testDiastolicPressureThreshold() {
         AlertStorage alertStorage = AlertStorage.getAlertStorageInstance();
-        Alert highAlert = new Alert("1","resolved", 1800000000000L, "Diastolic Pressure higher than 120");
+        Alert highAlert = new Alert("1", "resolved", 1800000000000L, "Diastolic Pressure higher than 120");
         Alert lowAlert = new Alert("2", "resolved", 1800000000000L, "Diastolic Pressure lower than 60");
         assertTrue(alertStorage.getAlerts().contains(highAlert));
         assertTrue(alertStorage.getAlerts().contains(lowAlert));
 
     }
-
 
 }

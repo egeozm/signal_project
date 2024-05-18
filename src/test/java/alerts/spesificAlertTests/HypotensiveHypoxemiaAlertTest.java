@@ -18,7 +18,7 @@ public class HypotensiveHypoxemiaAlertTest extends AlertTestBase {
     @Test
     public void testHypotensiveHypoxemiaAlert() {
         AlertStorage alertStorage = AlertStorage.getAlertStorageInstance();
-        Alert alert = new Alert("2", "resolved", 1800000000000L, "Hypotensive Hypoxemia Alert");
+        Alert alert = new Alert("1", "resolved", 1800000000000L, "Hypotensive Hypoxemia Alert");
         assertTrue(alertStorage.getAlerts().contains(alert));
     }
 }

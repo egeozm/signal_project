@@ -63,10 +63,11 @@ public class DataReaderImplementationTest {
 
             // Write test data to SystolicPressure.txt
             Files.writeString(Paths.get(testDirectoryPath, "SystolicPressure.txt"),
-                    "Patient ID: 1, Timestamp: 1715086124171, Label: SystolicPressure, Data: 190.0\n" +
+                    "Patient ID: 1, Timestamp: 1715086124171, Label: SystolicPressure, Data: 80.0\n" +
                             "Patient ID: 2, Timestamp: 1715086124171, Label: SystolicPressure, Data: 80.0\n" +
                             "Patient ID: 13, Timestamp: 1715086124203, Label: SystolicPressure, Data: 130.0\n" +
                             "Patient ID: 13, Timestamp: 1715086124206, Label: SystolicPressure, Data: 119.0\n" +
+                            "Patient ID: 3, Timestamp: 1715086124171, Label: SystolicPressure, Data: 190.0\n" +
                             "Patient ID: 13, Timestamp: 1715086124208, Label: SystolicPressure, Data: 108.0");
 
             // Write test data to DiastolicPressure.txt
@@ -79,13 +80,20 @@ public class DataReaderImplementationTest {
 
             // Write test data to ECG.txt
             Files.writeString(Paths.get(testDirectoryPath, "ECG.txt"),
-                    "Patient ID: 2, Timestamp: 1715551123342, Label: ECG, Data: -0.576\n" +
-                            "Patient ID: 2, Timestamp: 1715551125342, Label: ECG, Data: -0.480\n" +
-                            "Patient ID: 1, Timestamp: 1715551123342, Label: ECG, Data: 0.109\n" +
-                            "Patient ID: 1, Timestamp: 1715551125342, Label: ECG, Data: 0.115\n" +
-                            "Patient ID: 181, Timestamp: 1715551132197, Label: ECG, Data: 0.498\n" +
-                            "Patient ID: 181, Timestamp: 1715551135597, Label: ECG, Data: 0.506\n" +
-                            "Patient ID: 181, Timestamp: 1715551136697, Label: ECG, Data: 0.495");
+                    "Patient ID: 1, Timestamp: 1700000000000, Label: ECG, Data: -0.5\n" +
+                            "Patient ID: 1, Timestamp: 1700000000500, Label: ECG, Data: 1.1\n" +
+                            "Patient ID: 1, Timestamp: 1700000001000, Label: ECG, Data: -0.4\n" +
+                            "Patient ID: 1, Timestamp: 1700000001500, Label: ECG, Data: 1.0\n" +
+                            "Patient ID: 1, Timestamp: 1700000002000, Label: ECG, Data: -0.6\n" +
+                            "Patient ID: 1, Timestamp: 1700000002500, Label: ECG, Data: 1.2\n" +
+                            "Patient ID: 4, Timestamp: 1700000000000, Label: ECG, Data: -0.5\n" +
+                            "Patient ID: 4, Timestamp: 1700000005000, Label: ECG, Data: 1.2\n" +
+                            "Patient ID: 4, Timestamp: 1700000010000, Label: ECG, Data: -0.4\n" +
+                            "Patient ID: 4, Timestamp: 1700000015000, Label: ECG, Data: 1.3\n" +
+                            "Patient ID: 181, Timestamp: 1700000000000, Label: ECG, Data: -0.5\n" +
+                            "Patient ID: 181, Timestamp: 1700000001000, Label: ECG, Data: 1.1\n" +
+                            "Patient ID: 181, Timestamp: 1700000003000, Label: ECG, Data: -0.4\n" +
+                            "Patient ID: 181, Timestamp: 1700000003500, Label: ECG, Data: 1.0");
 
             // Write test data to RedBloodCells.txt
             Files.writeString(Paths.get(testDirectoryPath, "RedBloodCells.txt"),

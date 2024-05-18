@@ -6,7 +6,6 @@ import com.data_management.PatientRecord;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -68,13 +67,13 @@ public class AlertGenerator {
                     && patientsBloodPressure.get(i + 2).getMeasurementValue() > patientsBloodPressure.get(i + 1).getMeasurementValue() + 10) {
                 Alert alert = new Alert(String.valueOf(patientsBloodPressure.get(i).getPatientId()), "triggered", System.currentTimeMillis(), "Increasing Blood Pressure Trend Problem");
                 triggerAlert(alert);
-                break;
+
             }
             if (patientsBloodPressure.get(i + 1).getMeasurementValue() < patientsBloodPressure.get(i).getMeasurementValue() - 10
                     && patientsBloodPressure.get(i + 2).getMeasurementValue() < patientsBloodPressure.get(i + 1).getMeasurementValue() - 10) {
                 Alert alert = new Alert(String.valueOf(patientsBloodPressure.get(i).getPatientId()), "triggered", System.currentTimeMillis(), "Decreasing Blood Pressure Trend Problem");
                 triggerAlert(alert);
-                break;
+
             }
         }
 
@@ -83,12 +82,11 @@ public class AlertGenerator {
             if (patientRecord.getMeasurementValue() > 120) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Diastolic Pressure higher than 120");
                 triggerAlert(alert);
-                break;
+
             }
             if (patientRecord.getMeasurementValue() < 60) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Diastolic Pressure lower than 60");
                 triggerAlert(alert);
-                break;
             }
         }
 
@@ -96,13 +94,12 @@ public class AlertGenerator {
             if (patientRecord.getMeasurementValue() > 180) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Systolic Pressure higher than 180");
                 triggerAlert(alert);
-                break;
+
             }
 
             if (patientRecord.getMeasurementValue() < 90) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Systolic Pressure lower than 90");
                 triggerAlert(alert);
-                break;
             }
         }
     }
@@ -119,7 +116,7 @@ public class AlertGenerator {
             if (patientRecord.getMeasurementValue() < 92) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Saturation level lower than 92.0%");
                 triggerAlert(alert);
-                break;
+
             }
         }
 
@@ -131,7 +128,7 @@ public class AlertGenerator {
                 if (patientsSaturationLevel.get(i).getMeasurementValue() - patientsSaturationLevel.get(i + 1).getMeasurementValue() >= 5) {
                     Alert alert = new Alert(String.valueOf(patientsSaturationLevel.get(i).getPatientId()), "triggered", System.currentTimeMillis(), "Rapid Saturation Drop Alert");
                     triggerAlert(alert);
-                    break;
+
                 }
             }
         }
@@ -148,109 +145,101 @@ public class AlertGenerator {
 
         for (PatientRecord patientRecord : patientsSaturationSystolicPressure) {
 
-            if (patientRecord.getMeasurementValue() < 92) {
+            if (patientRecord.getRecordType().equals("Saturation") && patientRecord.getMeasurementValue() < 92) {
                 saturationAlert = true;
             }
 
-            if (patientRecord.getMeasurementValue() < 90) {
+            if (patientRecord.getRecordType().equals("SystolicPressure") && patientRecord.getMeasurementValue() < 90) {
                 systolicAlert = true;
             }
 
             if (saturationAlert && systolicAlert) {
                 Alert alert = new Alert(String.valueOf(patientRecord.getPatientId()), "triggered", System.currentTimeMillis(), "Hypotensive Hypoxemia Alert");
                 triggerAlert(alert);
-                break;
+
             }
         }
     }
 
-    // I used help from AI only for converting ECG to BPM, and I am sure that it's wrong.
-    // I do not know how to fix it because I did not understand the logic of converting process.
     private void evaluateECG(List<PatientRecord> patientRecords) {
-        List<PatientRecord> patientECG = patientRecords.stream()
+        List<PatientRecord> ecgRecords = patientRecords.stream()
                 .filter(x -> x.getRecordType().equals("ECG"))
                 .collect(Collectors.toList());
 
-        Map<Integer, List<PatientRecord>> ecgRecordsByPatient = patientECG.stream()
-                .collect(Collectors.groupingBy(PatientRecord::getPatientId));
+        String currentPatientId = "";
+        List<PatientRecord> currentPatientEcgRecords = new ArrayList<>();
 
-        ecgRecordsByPatient.forEach((patientId, records) -> {
-            List<Long> peakTimes = detectPeaks(records);
-            if (!peakTimes.isEmpty()) {
-                double heartRate = calculateHeartRate(peakTimes);
-                if (heartRate < 50) {
-                    triggerAlert(new Alert(String.valueOf(patientId), "triggered", System.currentTimeMillis(), "Heart Rate Lower Than 50 BPM"));
-                } else if (heartRate > 100) {
-                    triggerAlert(new Alert(String.valueOf(patientId), "triggered", System.currentTimeMillis(), "Heart Rate Higher Than 100 BPM"));
-                }
-                if (detectIrregularBeats(peakTimes)) {
-                    triggerAlert(new Alert(String.valueOf(patientId), "triggered", System.currentTimeMillis(), "Irregular Beat Alert"));
-                }
+        for (PatientRecord record : ecgRecords) {
+            String patientId = String.valueOf(record.getPatientId());
+
+            if (!patientId.equals(currentPatientId) && !currentPatientEcgRecords.isEmpty()) {
+                processECGRecords(currentPatientId, currentPatientEcgRecords);
+                currentPatientEcgRecords.clear();
             }
-        });
-    }
 
-    private double calculateThreshold(List<PatientRecord> records) {
-        if (records.isEmpty()) {
-            return 0;
+            currentPatientId = patientId;
+            currentPatientEcgRecords.add(record);
         }
 
-        double mean = records.stream()
-                .mapToDouble(r -> Double.parseDouble(String.valueOf(r.getMeasurementValue())))
-                .average()
-                .orElse(0.0);
-
-        double standardDeviation = calculateStandardDeviation(records, mean);
-
-        return mean + standardDeviation * 0.5;
+        if (!currentPatientEcgRecords.isEmpty()) {
+            processECGRecords(currentPatientId, currentPatientEcgRecords);
+        }
     }
 
-    private double calculateStandardDeviation(List<PatientRecord> records, double mean) {
-        double sumOfSquaredDifferences = records.stream()
-                .mapToDouble(r -> Double.parseDouble(String.valueOf(r.getMeasurementValue())))
-                .map(value -> Math.pow(value - mean, 2))
-                .sum();
+    private void processECGRecords(String patientId, List<PatientRecord> patientEcgRecords) {
+        double totalRRInterval = 0.0;
+        int beatCount = 0;
+        List<Double> rrIntervals = new ArrayList<>();
 
-        int n = records.size();
-        return Math.sqrt(sumOfSquaredDifferences / n);
-    }
-
-
-    private List<Long> detectPeaks(List<PatientRecord> records) {
-        List<Long> peakTimes = new ArrayList<>();
-        double threshold = calculateThreshold(records);
-
-        for (PatientRecord record : records) {
-            double value = Double.parseDouble(String.valueOf(record.getMeasurementValue()));
-            if (value > threshold) {
-                peakTimes.add(record.getTimestamp());
+        for (int i = 1; i < patientEcgRecords.size(); i++) {
+            double previousData = patientEcgRecords.get(i - 1).getMeasurementValue();
+            double currentData = patientEcgRecords.get(i).getMeasurementValue();
+            if (previousData < 0 && currentData > 0) {
+                // Detected a beat (R peak crossing zero points)
+                long previousTimestamp = patientEcgRecords.get(i - 1).getTimestamp();
+                long currentTimestamp = patientEcgRecords.get(i).getTimestamp();
+                double rrInterval = (currentTimestamp - previousTimestamp) / 1000.0; // Convert ms to seconds
+                rrIntervals.add(rrInterval);
+                totalRRInterval += rrInterval;
+                beatCount++;
             }
         }
-        return peakTimes;
-    }
 
-    private double calculateHeartRate(List<Long> peakTimes) {
-        List<Double> intervals = new ArrayList<>();
-        for (int i = 1; i < peakTimes.size(); i++) {
-            double interval = (peakTimes.get(i) - peakTimes.get(i - 1)) / 1000.0; // convert ms to seconds
-            intervals.add(interval);
+        if (beatCount > 0) {
+            double averageRRInterval = totalRRInterval / beatCount;
+            double heartRate = 60 / averageRRInterval; // Calculate heart rate in beats per minute
+
+//            // Debug statements
+//            System.out.println("Patient ID: " + patientId + " - Total RR Interval: " + totalRRInterval);
+//            System.out.println("Patient ID: " + patientId + " - Beat Count: " + beatCount);
+//            System.out.println("Patient ID: " + patientId + " - Average RR Interval (seconds): " + averageRRInterval);
+//            System.out.println("Patient ID: " + patientId + " - Calculated Heart Rate (BPM): " + heartRate);
+
+            // Abnormal Heart Rate Alert
+            if (heartRate < 50) {
+                Alert alert = new Alert(patientId, "triggered", System.currentTimeMillis(), "Abnormal Heart Rate Lower Than 50");
+                triggerAlert(alert);
+            }
+            if (heartRate > 100) {
+                Alert alert = new Alert(patientId, "triggered", System.currentTimeMillis(), "Abnormal Heart Rate Higher Than 100");
+                triggerAlert(alert);
+            }
+
+            // Irregular Beat Alert
+            double averageRRIntervalSum = rrIntervals.stream().mapToDouble(Double::doubleValue).sum() / rrIntervals.size();
+            double sumOfSquaredDifferences = rrIntervals.stream().mapToDouble(interval -> Math.pow(interval - averageRRIntervalSum, 2)).sum();
+            double standardDeviation = Math.sqrt(sumOfSquaredDifferences / rrIntervals.size());
+
+//            // Debug statement
+//            System.out.println("Patient ID: " + patientId + " - Standard Deviation of RR Intervals: " + standardDeviation);
+
+            if (standardDeviation > 0.1) { // Threshold for detecting irregular beats
+                Alert alert = new Alert(patientId, "triggered", System.currentTimeMillis(), "Irregular Beat Detected");
+                triggerAlert(alert);
+            }
         }
-        double averageInterval = intervals.stream().mapToDouble(val -> val).average().orElse(0.0);
-        return 60 / averageInterval; // Calculate BPM
     }
 
-    private boolean detectIrregularBeats(List<Long> peakTimes) {
-        List<Double> intervals = new ArrayList<>();
-        for (int i = 1; i < peakTimes.size(); i++) {
-            intervals.add((peakTimes.get(i) - peakTimes.get(i - 1)) / 1000.0); // convert ms to seconds
-        }
-        double meanInterval = intervals.stream().mapToDouble(val -> val).average().orElse(Double.MAX_VALUE);
-        double variance = intervals.stream().mapToDouble(i -> (i - meanInterval) * (i - meanInterval)).average().orElse(0);
-        double sd = Math.sqrt(variance);
-
-
-        return intervals.stream().anyMatch(i -> Math.abs(i - meanInterval) > 2 * sd);
-    }
 
     /**
      * Triggers an alert for the monitoring system. This method can be extended to

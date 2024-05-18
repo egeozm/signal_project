@@ -1,0 +1,11 @@
+Patient ID: 37, Timestamp: 1716032188808, Label: RedBloodCells, Data: 5.699177704359387
+Patient ID: 8, Timestamp: 1716032188809, Label: RedBloodCells, Data: 5.198082985617074
+Patient ID: 50, Timestamp: 1716032188811, Label: RedBloodCells, Data: 4.837643122457478
+Patient ID: 12, Timestamp: 1716032188813, Label: RedBloodCells, Data: 5.870688390551197
+Patient ID: 44, Timestamp: 1716032188814, Label: RedBloodCells, Data: 4.597374819689137
+Patient ID: 19, Timestamp: 1716032188815, Label: RedBloodCells, Data: 5.20945488975244
+Patient ID: 11, Timestamp: 1716032188815, Label: RedBloodCells, Data: 5.576955921434539
+Patient ID: 6, Timestamp: 1716032188816, Label: RedBloodCells, Data: 5.96840850212999
+Patient ID: 18, Timestamp: 1716032188817, Label: RedBloodCells, Data: 5.132910757624993
+Patient ID: 41, Timestamp: 1716032188817, Label: RedBloodCells, Data: 4.9493371157504615
+Patient ID: 4, Timestamp: 1716032188818, Label: RedBloodCells, Data: 5.587354745863323
