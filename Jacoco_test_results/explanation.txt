@@ -1,0 +1,6 @@
+I only tested the classes and methods I created.
+
+The only missing test in Alerts is ecg processECGRecords and I didn't test it because it's an iteration method for ECG
+Alert Generator so if it is wrong ECG Test class also fails.
+
+You can access all test reports via "target/site/jacoco/jacoco-sessions.html".

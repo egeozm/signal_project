@@ -3,7 +3,7 @@ package com.alerts;
 import java.util.Objects;
 
 // Represents an alert
-public class Alert {
+public class Alert implements AlertInterface {
     private final String patientId;
     private String condition;
     private final long timestamp;
@@ -42,5 +42,10 @@ public class Alert {
         if (o == null || getClass() != o.getClass()) return false;
         Alert alert = (Alert) o;
         return Objects.equals(patientId, alert.patientId) && Objects.equals(condition, alert.condition) && Objects.equals(label, alert.label);
+    }
+
+    @Override
+    public void triggerAlert() {
+
     }
 }

@@ -1,10 +1,12 @@
 package com.data_management;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import com.alerts.AlertGenerator;
 
@@ -16,6 +18,8 @@ import com.alerts.AlertGenerator;
  */
 public class DataStorage {
     private final Map<Integer, Patient> patientMap; // Stores patient objects indexed by their unique patient ID.
+    private static ScheduledExecutorService scheduler;
+    private static DataStorage instance;
 
     /**
      * Constructs a new instance of DataStorage, initializing the underlying storage
@@ -23,6 +27,14 @@ public class DataStorage {
      */
     public DataStorage() {
         this.patientMap = new HashMap<>();
+
+    }
+
+    public static synchronized DataStorage getInstance() {
+        if (instance == null) {
+            instance = new DataStorage();
+        }
+        return instance;
     }
 
     /**
@@ -72,36 +84,56 @@ public class DataStorage {
         return new ArrayList<>(patientMap.values());
     }
 
-
     /**
      * The main method for the DataStorage class.
      * Initializes the system, reads data into storage, and continuously monitors
      * and evaluates patient data.
      *
      * @param args command line arguments
+     * @throws Exception if an error occurs during data reading or processing
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+
+        // For File
         DataReader reader = new DataReaderImplementation("src/main/java/com/data_management/patient_data");
         DataStorage storage = new DataStorage();
         reader.readData(storage);
 
-//        // Example of using DataStorage to retrieve and print records for a patient
-//        List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
-//        for (PatientRecord record : records) {
-//            System.out.println("Record for Patient ID: " + record.getPatientId() +
-//                    ", Type: " + record.getRecordType() +
-//                    ", Data: " + record.getMeasurementValue() +
-//                    ", Timestamp: " + record.getTimestamp());
-//        }
+        // For WebSocket
+        try {
+            DataReader dataReader = new WebSocketReaderImplementation();
+            dataReader.readData(storage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Initialize the AlertGenerator with the storage
-        AlertGenerator alertGenerator = new AlertGenerator(storage);
+        AlertGenerator alertGenerator = new AlertGenerator();
 
-        // Evaluate all patients' data to check for conditions that may trigger alerts
+        scheduler = Executors.newScheduledThreadPool(1);
+        scheduleTask(() -> alertSchedulerTask(storage, alertGenerator));
+
+    }
+
+    /**
+     * Task to evaluate data and generate alerts for all patients.
+     *
+     * @param storage        the DataStorage instance containing patient data
+     * @param alertGenerator the AlertGenerator instance used to evaluate and generate alerts
+     */
+    public static void alertSchedulerTask(DataStorage storage, AlertGenerator alertGenerator) {
         for (Patient patient : storage.getAllPatients()) {
             alertGenerator.evaluateData(patient);
         }
     }
 
-
+    /**
+     * Schedules a recurring task to evaluate patient data and generate alerts.
+     *
+     * @param task the task to be scheduled
+     */
+    private static void scheduleTask(Runnable task) {
+        scheduler.scheduleAtFixedRate(task, 1, 1, TimeUnit.SECONDS);
+    }
 }
